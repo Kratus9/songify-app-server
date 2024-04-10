@@ -23,13 +23,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  favouriteSongs: [
+  likes: [
     {
       type: String,
       unique: true,
     },
   ],
-  playlists: [Playlist],
+  playlists: [Playlist.schema],
 });
 
 const User = mongoose.model("User", userSchema);

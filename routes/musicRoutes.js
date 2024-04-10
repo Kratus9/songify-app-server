@@ -3,14 +3,11 @@ const router = express.Router();
 const playlistController = require("../Controllers/playlistController");
 const favouritesController = require("../Controllers/favouritesController");
 
-router.post("/addSongToFavourites", favouritesController.addSongToFavourites);
+router.post("/addLikedItem", favouritesController.addLikedItem);
 
-router.delete(
-  "/deleteSongFromFavourites",
-  favouritesController.deleteSongFromFavourites
-);
+router.delete("/deleteLikedItem", favouritesController.deleteLikedItem);
 
-router.get("/getAllFavouriteSongs", favouritesController.getAllFavouriteSongs);
+router.get("/getAllLikedItems", favouritesController.getAllLikedItems);
 
 router.post("/addPlaylist", playlistController.addPlaylist);
 
