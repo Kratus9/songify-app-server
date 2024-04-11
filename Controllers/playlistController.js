@@ -5,14 +5,18 @@ const { v4: uuidv4 } = require("uuid");
 const playlistController = {
   addPlaylist: async (req, res) => {
     try {
-      const { userId, playlistName } = req.body;
+      const { userId, playlistName, playlistDescription } = req.body;
       const user = await User.findById(userId);
 
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
 
-      const newPlaylist = new Playlist({ name: playlistName, id: uuidv4() });
+      const newPlaylist = new Playlist({
+        name: playlistName,
+        id: uuidv4(),
+        description: playlistDescription,
+      });
       user.playlists.push(newPlaylist);
       await user.save();
 

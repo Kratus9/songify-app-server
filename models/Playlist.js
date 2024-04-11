@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { type } = require("os");
 
 const playlistSchema = new mongoose.Schema({
   name: {
@@ -15,6 +16,9 @@ const playlistSchema = new mongoose.Schema({
     type: Number,
     unique: true,
     required: true,
+  },
+  description: {
+    type: String,
   },
 });
 

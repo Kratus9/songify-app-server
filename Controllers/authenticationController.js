@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 
 const authenticationController = {
   register: async (req, res) => {
-    const { name, username, email, password, repeatPassword } = req.body;
-    console.log("Request Body:", req.body);
+    const { name, username, email, password, repeatPassword } = req.params;
+    console.log("Request Params:", req.params);
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) {
@@ -67,8 +67,8 @@ const authenticationController = {
     }
   },
   login: async (req, res) => {
-    const { username, password } = req.body;
     try {
+      const { username, password } = req.body;
       const user = await User.findOne({ username });
       if (!user) {
         return res.status(401).json({ errorMessage: "Invalid credentials" });

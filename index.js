@@ -24,6 +24,8 @@ db.once("open", () => {
 
 app.use(cors());
 
+app.use("/api", indexRoutes);
+
 // Middleware for parsing JSON in request
 app.use(express.json());
 
@@ -37,8 +39,6 @@ app.use(cookieParser());
 
 // Error handling middleware
 app.use(errorHandler);
-
-app.use("/api", indexRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server listening on PORT: ${PORT}`);
