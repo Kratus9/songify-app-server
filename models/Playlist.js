@@ -9,12 +9,10 @@ const playlistSchema = new mongoose.Schema({
   songs: [
     {
       type: String,
-      unique: true,
     },
   ],
   id: {
     type: Number,
-    unique: true,
     required: true,
   },
   description: {

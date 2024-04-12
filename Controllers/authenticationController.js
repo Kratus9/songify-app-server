@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 
 const authenticationController = {
   register: async (req, res) => {
-    const { name, username, email, password, repeatPassword } = req.params;
-    console.log("Request Params:", req.params);
+    const { name, username, email, password, repeatPassword } = req.body;
+    console.log("Request Body:", req.body);
     try {
       const existingUser = await User.findOne({ username });
       if (existingUser) {
@@ -27,7 +27,8 @@ const authenticationController = {
       if (!usernameRegex.test(username)) {
         return res.status(400).json({ message: "Invalid username format" });
       }
-      const passwordRegex = /^(?=.\d)(?=.[a-z])(?=.[A-Z])(?=.[a-zA-Z]).{8,}$/gm;
+      const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
       if (!passwordRegex.test(password)) {
         return res.status(400).json({
           errorMessage:
@@ -69,30 +70,40 @@ const authenticationController = {
   login: async (req, res) => {
     try {
       const { username, password } = req.body;
+      console.log("Req Body:", req.body);
       const user = await User.findOne({ username });
+      console.log("Found User:", user);
       if (!user) {
+        console.log("User does not exist");
         return res.status(401).json({ errorMessage: "Invalid credentials" });
       }
+      console.log("Comparing password from body to user.password");
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
+        console.log("Password does not match");
         return res.status(401).json({ errorMessage: "Invalid credentials" });
       }
+      console.log("Password matched");
 
       const payload = {
         _id: user._id,
         emai: user.email,
       };
+      console.log("Payload:", payload);
+      console.log("Trying to sign in jwt");
 
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
         algorithm: "HS256",
         expiresIn: "24h",
       });
-
-      req.cookie("token", token, {
+      console.log("Sign to jwt completed");
+      console.log("Requesting cookie");
+      res.cookie("token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "None",
       });
+      console.log("Found cookie:", token);
 
       res.status(202).json({ token, message: "Login Successful" });
     } catch (error) {

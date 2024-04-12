@@ -26,7 +26,6 @@ const userSchema = new mongoose.Schema({
   likes: [
     {
       type: String,
-      unique: true,
     },
   ],
   playlists: [Playlist.schema],
